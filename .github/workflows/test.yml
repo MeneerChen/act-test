@@ -41,7 +41,7 @@ jobs:
 
       - name: Generate regression test summary
         continue-on-error: true
-        if: ${{ always() }}
+        if: ${{ always() && steps.find-differences.outputs.has_differences == 'True' }}
         run: |
-          echo "${{ steps.find-differences.outputs.has_differences }}"
+          echo "find differences has differences"
 
