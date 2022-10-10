@@ -35,7 +35,7 @@ jobs:
         shell: powershell
         run: |
           python -u find_differences.py
-          if ($LASTEXITCODE == 1){
+          if ($LASTEXITCODE -eq 1){
             echo "::set-output name=find_differences_exit_code::test"
           }
 
