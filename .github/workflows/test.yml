@@ -1,0 +1,36 @@
+name: PR Build Validation
+
+on:
+  pull_request:
+    branches:
+      - ACC
+      - master
+
+  workflow_dispatch:
+    inputs:
+      apps:
+        type: string
+        required: false
+        description: The apps for which to run the regression test
+
+      test_types:
+        type: string
+        required: false
+        description: The types of tests to run (analysis, user_mutation_log, role_mutation_log)
+
+jobs:
+  regression-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: act.test
+
+      - name: Find differences
+        id: find-differences
+        run: |
+          python -u find_differences.py
+
+
