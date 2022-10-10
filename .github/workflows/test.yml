@@ -20,7 +20,7 @@ on:
 
 jobs:
   regression-tests:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -32,7 +32,14 @@ jobs:
 
       - name: Find differences
         id: find-differences
+        shell: powershell
         run: |
           python -u find_differences.py
+          echo "::set-output name=find_differences_exit_code::$LASTEXITCODE"
 
+      - name: Generate regression test summary
+        continue-on-error: true
+        if: ${{ always() && steps.find-differences.outcome == 'failure' }}
+        run: |
+          echo "${{ steps.find-differences.outputs.find_differences_exit_code }}"
 
