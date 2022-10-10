@@ -35,13 +35,13 @@ jobs:
         shell: powershell
         run: |
           python -u find_differences.py
-          if ($LASTEXITCODE -eq 1){
-            echo "::set-output name=find_differences_exit_code::test"
-          }
+          $has_differences = $LASTEXITCODE -eq 1
+          echo "::set-output name=has_differences::$has_differences"
+
 
       - name: Generate regression test summary
         continue-on-error: true
-        if: ${{ always() && steps.find-differences.outputs.find_differences_exit_code == 'test' }}
+        if: ${{ always() }}
         run: |
-          echo "find differences has differences"
+          echo "${{ steps.find-differences.outputs.has_differences }}"
 
