@@ -33,6 +33,7 @@ jobs:
       - name: Find differences
         id: find-differences
         run: |
+          echo $ErrorActionPreference 
           python -u find_differences.py
           $has_differences = $LASTEXITCODE -eq 1
           echo "::set-output name=has_differences::$has_differences"
