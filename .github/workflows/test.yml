@@ -32,7 +32,6 @@ jobs:
 
       - name: Find differences
         id: find-differences
-        shell: powershell
         run: |
           python -u find_differences.py
           $has_differences = $LASTEXITCODE -eq 1
@@ -40,7 +39,6 @@ jobs:
 
 
       - name: Generate regression test summary
-        continue-on-error: true
         if: ${{ always() && steps.find-differences.outputs.has_differences == 'True' }}
         run: |
           echo "find differences has differences"
